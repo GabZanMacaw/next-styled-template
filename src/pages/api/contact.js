@@ -1,15 +1,13 @@
-import sendgrid from "@sendgrid/mail";
+import { sendEmail } from "../../lib/smtp-mail";
 import { getEmail } from "../../lib/api";
-
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function sendEmail(req, res) {
   const email = await getEmail();
 
   try {
-    await sendgrid.send({
+    await sendEmail({
       to: email.emailFormulario,
-      from: "enviosmacaw@gmail.com",
+
       subject: `*Novo contato através do formulário* - ${req.body.nome}`,
       replyTo: req.body.email,
       html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
